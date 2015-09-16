@@ -24,6 +24,9 @@ LogIn: Log in
 ForumCreationTitle: Create a new forum
 CreateForum: Create
 
+# View Topic
+BackToForum forumTitle@Text: Back to #{forumTitle}
+
 # Create Topic
 TopicTitle: Title
 TopicSlug: Slug

@@ -11,8 +11,8 @@ import Partials (gravatarUrl, fullTimeWidget)
 getTopicViewR :: Slug -> Slug -> Handler Html
 getTopicViewR forumSlug topicSlug = do
     muser <- maybeAuth
-    ((E.Value topicId, E.Value topicTitle, E.Value topicBody, E.Value topicCreated, E.Value topicAuthor, E.Value topicAuthorEmail), comments) <- runDB $ do
-        Entity forumId _ <- getBy404 $ UniqueForumSlug forumSlug
+    (parentForumTitle, (E.Value topicId, E.Value topicTitle, E.Value topicBody, E.Value topicCreated, E.Value topicAuthor, E.Value topicAuthorEmail), comments) <- runDB $ do
+        Entity forumId forum <- getBy404 $ UniqueForumSlug forumSlug
         topic@(E.Value topicId, _, _, _, _, _) <- eGet404 $ E.from $ \(node `E.InnerJoin` user) -> do
             E.on $ node ^. NodeAuthor E.==. user ^. UserId
             E.where_ (node ^. NodeForum E.==. (E.val forumId) E.&&. node ^. NodeSlug E.==. (E.val topicSlug))
@@ -35,7 +35,7 @@ getTopicViewR forumSlug topicSlug = do
                 user ^. UserNickname,
                 user ^. UserEmail
               )
-        return (topic, comments)
+        return (forumTitle forum, topic, comments)
     (widget, enctype) <- (case muser of
             Just _ -> generateFormPost $ replyForm topicId
             _ -> return (mempty, mempty))

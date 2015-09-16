@@ -1,3 +1,8 @@
+<p>
+    <a href=@{ForumViewR forumSlug}>
+        <span .glyphicon.glyphicon-chevron-left>
+        _{MsgBackToForum parentForumTitle}
+
 <div .well>
     <div .row>
         <div .col-md-4.topic-info>
