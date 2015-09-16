@@ -7,5 +7,5 @@
     date
         color: gray
 
-.comment:nth-child(odd)
-    background: #eeeeec
+.comment
+    margin-bottom: 3em;

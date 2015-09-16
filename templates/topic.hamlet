@@ -1,19 +1,19 @@
 <div .well>
     <div .row>
         <div .col-md-4.topic-info>
-            <img .avatar src="https://avatars3.githubusercontent.com/u/705123?v=3&amp;s=100" alt="Lisured">
-            <p .author>#{show $ nodeAuthor topic}
-            <date>#{show $ nodeCreated topic}
+            <img .avatar src="#{gravatarUrl topicAuthorEmail 100}" alt="" width="100" height="100">
+            <p .author>#{topicAuthor}
+            ^{fullTimeWidget topicCreated}
         <div .col-md-8>
-            <h2>#{nodeTitle topic}
-            #{nodeBody topic}
+            <h2>#{topicTitle}
+            #{topicBody}
 
-$forall Comment _node author body created <- comments
+$forall (E.Value commentId, E.Value body, E.Value created, E.Value author, E.Value authorEmail) <- comments
     <div .row.comment>
         <div .col-md-4.topic-info>
-            <img .avatar src="https://avatars3.githubusercontent.com/u/705123?v=3&amp;s=75" alt="Lisured">
-            <p .author>#{show $ author}
-            <date>#{show $ created}
+            <img .avatar src="#{gravatarUrl authorEmail 75}" alt="" width="75" height="75">
+            <p .author>#{author}
+            ^{fullTimeWidget created}
         <div .col-md-8>
             #{body}
 

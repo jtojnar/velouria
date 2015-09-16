@@ -1,26 +1,48 @@
 module Handler.TopicView where
 
 import Import
+import qualified Database.Esqueleto as E
+import Database.Esqueleto ((^.))
 import Yesod.Form.Bootstrap3
 import Yesod.Text.Markdown
 import View.Form
+import Partials (gravatarUrl, fullTimeWidget)
 
 getTopicViewR :: Slug -> Slug -> Handler Html
 getTopicViewR forumSlug topicSlug = do
     muser <- maybeAuth
-    (topicId, topic, comments) <- runDB $ do
+    ((E.Value topicId, E.Value topicTitle, E.Value topicBody, E.Value topicCreated, E.Value topicAuthor, E.Value topicAuthorEmail), comments) <- runDB $ do
         Entity forumId _ <- getBy404 $ UniqueForumSlug forumSlug
-        Entity topicId topic <- getBy404 $ UniqueNodeSlug forumId topicSlug
-        comments <- selectList [CommentNode ==. topicId] [Asc CommentCreated]
-        return (topicId, topic, map entityVal comments)
+        topic@(E.Value topicId, _, _, _, _, _) <- eGet404 $ E.from $ \(node `E.InnerJoin` user) -> do
+            E.on $ node ^. NodeAuthor E.==. user ^. UserId
+            E.where_ (node ^. NodeForum E.==. (E.val forumId) E.&&. node ^. NodeSlug E.==. (E.val topicSlug))
+            return (
+                node ^. NodeId,
+                node ^. NodeTitle,
+                node ^. NodeBody,
+                node ^. NodeCreated,
+                user ^. UserNickname,
+                user ^. UserEmail
+              )
+        comments <- E.select $ E.from $ \(comment `E.InnerJoin` user) -> do
+            E.on $ comment ^. CommentAuthor E.==. user ^. UserId
+            E.where_ (comment ^. CommentNode E.==. (E.val topicId))
+            E.orderBy [E.asc (comment ^. CommentCreated)]
+            return (
+                comment ^. CommentId,
+                comment ^. CommentBody,
+                comment ^. CommentCreated,
+                user ^. UserNickname,
+                user ^. UserEmail
+              )
+        return (topic, comments)
     (widget, enctype) <- (case muser of
             Just _ -> generateFormPost $ replyForm topicId
             _ -> return (mempty, mempty))
     defaultLayout $ do
-        setTitle $ toHtml $ nodeTitle topic
+        setTitle $ toHtml topicTitle
         let replyFormWidget = mkFormView (TopicReplyR forumSlug topicSlug) (pure widget) enctype
         $(widgetFile "topic")
-
 
 getTopicReplyR, postTopicReplyR :: Slug -> Slug -> Handler Html
 getTopicReplyR = postTopicReplyR

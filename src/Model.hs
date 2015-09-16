@@ -2,6 +2,7 @@ module Model where
 
 import ClassyPrelude.Yesod
 import Database.Persist.Quasi
+import qualified Database.Esqueleto as E
 import Model.NodeType
 import Model.Slug
 import Model.UserRole
@@ -18,3 +19,9 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"]
 
 isAdmin :: User -> Bool
 isAdmin user = userRole user == Admin
+
+eGet404 query = do
+    res <- E.select query
+    case res of
+        [] -> notFound
+        x:_ -> return x
