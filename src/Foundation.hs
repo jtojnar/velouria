@@ -51,6 +51,13 @@ instance Yesod App where
 
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR css_bootstrap_css
+            addScript $ StaticR js_jquery_js
+            addScript $ StaticR js_jquery_timeago_js
+            toWidget [julius|
+            jQuery(document).ready(function() {
+                jQuery('time').timeago();
+            });
+            |]
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
