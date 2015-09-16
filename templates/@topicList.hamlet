@@ -1,0 +1,10 @@
+<table .table.table-striped.table-bordered>
+    <tr>
+        <th>_{MsgTopicName}
+        <th>_{MsgRepliesCount}
+        <th>_{MsgLastPost}
+    $forall Entity _ topic <- topics
+        <tr>
+            <td><a href=@{TopicViewR (forumSlug forum) (nodeSlug topic)}>#{nodeTitle topic}
+            <td>0
+            <td>Lisured

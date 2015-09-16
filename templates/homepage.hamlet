@@ -1,0 +1,12 @@
+$maybe Entity _ user <- muser
+    $if isAdmin user
+        <p .pull-right>
+            <a .btn.btn-primary href=@{ForumCreateR}>
+                <span .glyphicon.glyphicon-plus>
+                _{MsgCreateForumLink}
+
+$if not $ null fora
+    <h2>_{MsgForaList}
+    ^{forumListPartial fora}
+$else
+    <p .aler.alert-info>_{MsgNoFora}

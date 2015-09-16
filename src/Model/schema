@@ -1,0 +1,42 @@
+User
+    nickname Text
+    password ByteString
+    email Text
+    emailVerified Bool
+    role UserRole
+
+    UniqueNickname nickname
+    UniqueEmail email
+
+    deriving Typeable
+
+
+Forum
+    parent ForumId Maybe
+    title Text
+    slug Slug
+    description Markdown Maybe
+
+    UniqueForumSlug slug
+
+    deriving Show
+
+
+Node
+    title Text
+    slug Slug
+    body Markdown
+    author UserId
+    created UTCTime
+    forum ForumId
+    type NodeType
+    commentable Bool default=True
+
+    UniqueNodeSlug forum slug
+
+
+Comment
+    node NodeId
+    author UserId
+    body Markdown
+    created UTCTime

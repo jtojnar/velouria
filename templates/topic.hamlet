@@ -1,0 +1,20 @@
+<div .well>
+    <div .row>
+        <div .col-md-4.topic-info>
+            <img .avatar src="https://avatars3.githubusercontent.com/u/705123?v=3&amp;s=100" alt="Lisured">
+            <p .author>#{show $ nodeAuthor topic}
+            <date>#{show $ nodeCreated topic}
+        <div .col-md-8>
+            <h2>#{nodeTitle topic}
+            #{nodeBody topic}
+
+$forall Comment _node author body created <- comments
+    <div .row.comment>
+        <div .col-md-4.topic-info>
+            <img .avatar src="https://avatars3.githubusercontent.com/u/705123?v=3&amp;s=75" alt="Lisured">
+            <p .author>#{show $ author}
+            <date>#{show $ created}
+        <div .col-md-8>
+            #{body}
+
+^{replyFormWidget}

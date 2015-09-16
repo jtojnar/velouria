@@ -1,0 +1,20 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href=@{HomeR}>Test Forum
+        <ul class="nav navbar-nav navbar-right">
+            $maybe Entity _ user <- muser
+                <li class="navbar-text">
+                    $if isAdmin user
+                        ٭
+                    #{userNickname user}
+                <li>
+                    <a href=@{AuthR LogoutR}>_{MsgLogOut}
+            $nothing
+                <li>
+                    <a href=@{AuthR LoginR}>_{MsgLogIn}
+
+$maybe msg <- mmsg
+    <div #message>#{msg}
+
+^{widget}

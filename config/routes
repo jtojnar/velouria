@@ -1,0 +1,9 @@
+/static StaticR Static appStatic
+/auth   AuthR   Auth   getAuth
+
+/ HomeR GET
+!/f/create ForumCreateR GET POST
+/f/#Slug ForumViewR GET
+!/f/#Slug/create TopicCreateR GET POST
+/f/#Slug/#Slug TopicViewR GET
+/f/#Slug/#Slug/reply TopicReplyR GET POST

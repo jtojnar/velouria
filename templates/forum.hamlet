@@ -1,0 +1,16 @@
+$if not $ null fora
+    <h2>_{MsgForaList}
+    ^{forumListPartial fora}
+
+
+$maybe Entity _ user <- muser
+    <p .pull-right>
+        <a .btn.btn-primary href=@{TopicCreateR (forumSlug currentForum)}>
+            <span .glyphicon.glyphicon-plus>
+            _{MsgCreateTopicLink}
+
+$if not $ null topics
+    <h2>_{MsgTopicList}
+    ^{topicListPartial currentForum topics}
+$else
+    <p .alert.alert-info>_{MsgEmptyForum}
