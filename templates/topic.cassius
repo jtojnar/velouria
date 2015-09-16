@@ -4,7 +4,7 @@
     .avatar
         border-radius: 50%
 
-    date
+    time
         color: gray
 
 .comment
