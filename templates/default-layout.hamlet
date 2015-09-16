@@ -6,7 +6,7 @@
             $maybe Entity _ user <- muser
                 <li class="navbar-text">
                     $if isAdmin user
-                        ٭
+                        <span .glyphicon.glyphicon-king title="_{MsgAdministrator}">
                     #{userNickname user}
                 <li>
                     <a href=@{AuthR LogoutR}>_{MsgLogOut}

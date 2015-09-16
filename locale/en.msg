@@ -18,6 +18,7 @@ ForumDescription: Description
 #Navbar
 LogOut: Log out
 LogIn: Log in
+Administrator: Administrator
 
 # Create Forum
 ForumCreationTitle: Create a new forum
