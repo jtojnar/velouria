@@ -1,7 +1,15 @@
 <h1>#{currentForumTitle}
+<p>
+    $maybe parentForum <- mParentForum
+        <a href=@{ForumViewR (forumSlug parentForum)}>
+            <span .glyphicon.glyphicon-chevron-up>
+            _{MsgBackToForum (forumTitle parentForum)}
+    $nothing
+        <a href=@{HomeR}>
+            <span .glyphicon.glyphicon-home>
+            _{MsgBackToRoot}
 
 $if not $ null fora
-    <h2>_{MsgForaList}
     ^{forumListPartial fora}
 
 
@@ -12,7 +20,6 @@ $maybe _ <- muser
             _{MsgCreateTopicLink}
 
 $if not $ null topics
-    <h2>_{MsgTopicList}
     ^{topicListPartial currentForum topics}
 $else
     <p .alert.alert-info>_{MsgEmptyForum}

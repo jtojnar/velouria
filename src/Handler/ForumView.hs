@@ -10,6 +10,9 @@ getForumViewR :: Slug -> Handler Html
 getForumViewR slug = do
     muser <- maybeAuth
     Entity forumId currentForum <- runDB $ getBy404 $ UniqueForumSlug slug
+    mParentForum <- (case forumParent currentForum of
+        Just id -> runDB $ get id
+        Nothing -> return Nothing)
     let currentForumTitle = forumTitle currentForum
     (fora, topics) <- runDB $ do
         topics <- selectTopics forumId

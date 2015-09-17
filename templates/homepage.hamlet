@@ -8,7 +8,6 @@ $maybe Entity _ user <- muser
                 _{MsgCreateForumLink}
 
 $if not $ null fora
-    <h2>_{MsgForaList}
     ^{forumListPartial fora}
 $else
     <p .alert.alert-info>_{MsgNoFora}

@@ -2,8 +2,6 @@ ForumName: Forum name
 TopicName: Topic name
 LastPost: Last Post
 LastTopic: Last Topic
-ForaList: List of fora
-TopicList: List of topics
 EmptyForum: Threre aren’t any messages in this forum.
 NoFora: There aren’t any fora yet.
 CreateTopicLink: Create a topic
@@ -27,6 +25,7 @@ CreateForum: Create
 
 # View Topic
 BackToForum forumTitle@Text: Back to #{forumTitle}
+BackToRoot: Back to the main page
 
 # Create Topic
 TopicTitle: Title
