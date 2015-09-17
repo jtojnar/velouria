@@ -3,7 +3,7 @@
         <th>_{MsgForumName}
         <th>_{MsgTopicCount}
         <th>_{MsgLastTopic}
-    $forall (E.Value forumTitle, E.Value forumSlug, E.Value mforumDescription, E.Value topicCount, E.Value mlastTopicAuthor, E.Value mlastTopicTime) <- fora
+    $forall (E.Value forumTitle, E.Value forumSlug, E.Value mforumDescription, E.Value topicCount, E.Value mlastTopicTitle, E.Value mlastTopicSlug, E.Value mlastTopicAuthor, E.Value mlastTopicTime) <- fora
         <tr>
             <td>
                 <a href=@{ForumViewR forumSlug}>#{forumTitle}
@@ -11,6 +11,10 @@
                     <p>#{forumDescription}
             <td>#{topicCount}
             <td>
+                $maybe lastTopicSlug <- mlastTopicSlug
+                    $maybe lastTopicTitle <- mlastTopicTitle
+                        <p>
+                            <a href=@{TopicViewR forumSlug lastTopicSlug}>#{lastTopicTitle}
                 $maybe lastTopicAuthor <- mlastTopicAuthor
                     #{lastTopicAuthor}
                 \

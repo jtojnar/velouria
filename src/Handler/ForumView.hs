@@ -19,7 +19,7 @@ getForumViewR slug = do
         $(widgetFile "forum")
 
 type TopicListInfo = (E.Value Text, E.Value Slug, E.Value Text, E.Value UTCTime, E.Value Int, E.Value (Maybe Text), E.Value (Maybe UTCTime))
-type ForumListInfo = (E.Value Text, E.Value Slug, E.Value (Maybe Markdown), E.Value Int, E.Value (Maybe Text), E.Value (Maybe UTCTime))
+type ForumListInfo = (E.Value Text, E.Value Slug, E.Value (Maybe Markdown), E.Value Int, E.Value (Maybe Text), E.Value (Maybe Slug), E.Value (Maybe Text), E.Value (Maybe UTCTime))
 
 forumListPartial :: [ForumListInfo] -> Widget
 forumListPartial fora = $(widgetFile "@forumList")
@@ -35,13 +35,15 @@ selectFora forumId = E.select $ E.from $ \(forum `E.LeftOuterJoin` topic `E.Left
         Nothing -> E.isNothing $ forum ^. ForumParent
         _ -> forum ^. ForumParent E.==. (E.val forumId)
       )
-    E.orderBy [E.asc (forum ^. ForumTitle)]
+    E.orderBy [E.asc (forum ^. ForumTitle), E.desc (topic ?. NodeCreated)]
     E.groupBy (forum ^. ForumId)
     return (
         forum ^. ForumTitle, -- forumTitle
         forum ^. ForumSlug, -- forumSlug
         forum ^. ForumDescription, -- mforumDescription
         E.count (topic ?. NodeId), -- topicCount
+        topic ?. NodeTitle,-- mlastTopicTitle
+        topic ?. NodeSlug,-- mlastTopicSlug
         E.just (tUser ^. UserNickname), -- mlastTopicAuthor
         topic ?. NodeCreated -- mlastTopicTime
       )

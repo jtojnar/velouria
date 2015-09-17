@@ -3,7 +3,7 @@ $if not $ null fora
     ^{forumListPartial fora}
 
 
-$maybe Entity _ user <- muser
+$maybe _ <- muser
     <p .pull-right>
         <a .btn.btn-primary href=@{TopicCreateR (forumSlug currentForum)}>
             <span .glyphicon.glyphicon-plus>
