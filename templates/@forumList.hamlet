@@ -2,9 +2,17 @@
     <tr>
         <th>_{MsgForumName}
         <th>_{MsgTopicCount}
-        <th>_{MsgLastPost}
-    $forall Entity _ forum <- fora
+        <th>_{MsgLastTopic}
+    $forall (E.Value forumTitle, E.Value forumSlug, E.Value mforumDescription, E.Value topicCount, E.Value mlastTopicAuthor, E.Value mlastTopicTime) <- fora
         <tr>
-            <td><a href=@{ForumViewR (forumSlug forum)}>#{forumTitle forum}
-            <td>0
-            <td>Lisured
+            <td>
+                <a href=@{ForumViewR forumSlug}>#{forumTitle}
+                $maybe forumDescription <- mforumDescription
+                    <p>#{forumDescription}
+            <td>#{topicCount}
+            <td>
+                $maybe lastTopicAuthor <- mlastTopicAuthor
+                    #{lastTopicAuthor}
+                \
+                $maybe lastTopicTime <- mlastTopicTime
+                    ^{fullTimeWidget lastTopicTime}

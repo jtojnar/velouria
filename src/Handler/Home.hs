@@ -1,13 +1,13 @@
 module Handler.Home where
 
 import Import
-import Partials
+import Handler.ForumView (forumListPartial, selectFora)
 
 getHomeR :: Handler Html
 getHomeR = do
     master <- getYesod
     muser <- maybeAuth
-    fora <- runDB $ selectList [ForumParent ==. Nothing] [Desc ForumTitle]
+    fora <- runDB $ selectFora Nothing
     defaultLayout $ do
         setTitle . toHtml . appForumTitle $ appSettings master
         $(widgetFile "homepage")

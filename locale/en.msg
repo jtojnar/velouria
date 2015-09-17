@@ -1,6 +1,7 @@
 ForumName: Forum name
 TopicName: Topic name
 LastPost: Last Post
+LastTopic: Last Topic
 ForaList: List of fora
 TopicList: List of topics
 EmptyForum: Threre aren’t any messages in this forum.

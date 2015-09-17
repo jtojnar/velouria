@@ -4,6 +4,7 @@ import Import
 import Partials
 import qualified Database.Esqueleto as E
 import Database.Esqueleto ((^.), (?.))
+import Text.Markdown
 
 getForumViewR :: Slug -> Handler Html
 getForumViewR slug = do
@@ -11,18 +12,39 @@ getForumViewR slug = do
     Entity forumId currentForum <- runDB $ getBy404 $ UniqueForumSlug slug
     (fora, topics) <- runDB $ do
         topics <- selectTopics forumId
-        fora <- selectFora forumId
+        fora <- selectFora $ Just forumId
         return (fora, topics)
     defaultLayout $ do
         setTitle $ toHtml $ forumTitle currentForum
         $(widgetFile "forum")
 
-type TopicListInfo = (E.Value Text, E.Value Slug, E.Value Text, E.Value UTCTime, E.Value Int, (E.Value (Maybe Text)), E.Value (Maybe UTCTime))
+type TopicListInfo = (E.Value Text, E.Value Slug, E.Value Text, E.Value UTCTime, E.Value Int, E.Value (Maybe Text), E.Value (Maybe UTCTime))
+type ForumListInfo = (E.Value Text, E.Value Slug, E.Value (Maybe Markdown), E.Value Int, E.Value (Maybe Text), E.Value (Maybe UTCTime))
+
+forumListPartial :: [ForumListInfo] -> Widget
+forumListPartial fora = $(widgetFile "@forumList")
 
 topicListPartial :: Forum -> [TopicListInfo] -> Widget
 topicListPartial forum topics = $(widgetFile "@topicList")
 
-selectFora forumId = selectList [ForumParent ==. Just forumId] [Desc ForumTitle]
+selectFora :: (MonadIO m0) => Maybe ForumId -> SqlPersistT m0 [ForumListInfo]
+selectFora forumId = E.select $ E.from $ \(forum `E.LeftOuterJoin` topic `E.LeftOuterJoin` tUser) -> do
+    E.on $ topic ?. NodeAuthor E.==. E.just (tUser ^. UserId)
+    E.on $ E.just (forum ^. ForumId) E.==. topic ?. NodeForum
+    E.where_ (case forumId of
+        Nothing -> E.isNothing $ forum ^. ForumParent
+        _ -> forum ^. ForumParent E.==. (E.val forumId)
+      )
+    E.orderBy [E.asc (forum ^. ForumTitle)]
+    E.groupBy (forum ^. ForumId)
+    return (
+        forum ^. ForumTitle, -- forumTitle
+        forum ^. ForumSlug, -- forumSlug
+        forum ^. ForumDescription, -- mforumDescription
+        E.count (topic ?. NodeId), -- topicCount
+        E.just (tUser ^. UserNickname), -- mlastTopicAuthor
+        topic ?. NodeCreated -- mlastTopicTime
+      )
 
 selectTopics :: (MonadIO m0) => ForumId -> SqlPersistT m0 [TopicListInfo]
 selectTopics forumId = E.select $ E.from $ \(node `E.LeftOuterJoin` comment `E.LeftOuterJoin` nUser `E.LeftOuterJoin` cUser) -> do
