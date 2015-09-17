@@ -21,7 +21,7 @@ getTopicCreateR slug = do
             mkFormView (TopicCreateR slug) (pure widget) enctype
 
 topicCreationForm :: ForumId -> Form Node
-topicCreationForm forumId = renderBootstrap3 (BootstrapHorizontalForm (ColMd 0) (ColMd 4) (ColMd 0) (ColMd 6)) $ Node
+topicCreationForm forumId = renderForm $ Node
                                 <$> areq textField (bfs MsgTopicTitle) Nothing
                                 <*> areq slugField (bfs MsgTopicSlug) Nothing
                                 <*> areq markdownField (extendFieldSettings "rows" "15" (bfs MsgTopicBody)) Nothing

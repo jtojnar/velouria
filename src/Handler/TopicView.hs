@@ -60,7 +60,7 @@ postTopicReplyR forumSlug topicSlug = do
             mkFormView (TopicReplyR forumSlug topicSlug) (pure widget) enctype
 
 replyForm :: NodeId -> Form Comment
-replyForm topicId = renderBootstrap3 (BootstrapHorizontalForm (ColMd 0) (ColMd 4) (ColMd 0) (ColMd 6)) $ Comment
+replyForm topicId = renderForm $ Comment
                                 <$> pure topicId
                                 <*> lift requireAuthId
                                 <*> areq markdownField (extendFieldSettings "rows" "10" (bfs MsgReplyBody)) Nothing

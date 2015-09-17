@@ -19,7 +19,7 @@ getForumCreateR = do
             mkFormView ForumCreateR (pure widget) enctype
 
 forumCreationForm :: Form Forum
-forumCreationForm = renderBootstrap3 (BootstrapHorizontalForm (ColMd 0) (ColMd 4) (ColMd 0) (ColMd 6)) $ Forum
+forumCreationForm = renderForm $ Forum
                                 <$> aopt (selectField findExistingFora) (bfs MsgParentForum) Nothing
                                 <*> areq textField (bfs MsgForumTitle) Nothing
                                 <*> areq slugField (bfs MsgForumSlug) Nothing
