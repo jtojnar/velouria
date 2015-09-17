@@ -3,8 +3,18 @@
         <th>_{MsgTopicName}
         <th>_{MsgRepliesCount}
         <th>_{MsgLastPost}
-    $forall Entity _ topic <- topics
+    $forall (E.Value topicTitle, E.Value topicSlug, E.Value topicAuthor, E.Value topicCreated, E.Value commentCount, E.Value mlastCommentAuthor, E.Value mlastCommentTime) <- topics
         <tr>
-            <td><a href=@{TopicViewR (forumSlug forum) (nodeSlug topic)}>#{nodeTitle topic}
-            <td>0
-            <td>Lisured
+            <td>
+                <p>
+                    <a href=@{TopicViewR (forumSlug forum) topicSlug}>#{topicTitle}
+                #{topicAuthor}
+                ·
+                ^{fullTimeWidget topicCreated}
+            <td>#{commentCount}
+            <td>
+                $maybe lastCommentAuthor <- mlastCommentAuthor
+                    #{lastCommentAuthor}
+                \
+                $maybe lastCommentTime <- mlastCommentTime
+                    ^{fullTimeWidget lastCommentTime}

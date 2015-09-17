@@ -7,9 +7,6 @@ import Data.Time.Format
 forumListPartial :: [Entity Forum] -> Widget
 forumListPartial fora = $(widgetFile "@forumList")
 
-topicListPartial :: Forum -> [Entity Node] -> Widget
-topicListPartial forum topics = $(widgetFile "@topicList")
-
 gravatarUrl :: Text -> Int -> String
 gravatarUrl email size = gravatar def {gSize = Just (Size size)} email
 
