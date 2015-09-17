@@ -10,12 +10,13 @@ getForumViewR :: Slug -> Handler Html
 getForumViewR slug = do
     muser <- maybeAuth
     Entity forumId currentForum <- runDB $ getBy404 $ UniqueForumSlug slug
+    let currentForumTitle = forumTitle currentForum
     (fora, topics) <- runDB $ do
         topics <- selectTopics forumId
         fora <- selectFora $ Just forumId
         return (fora, topics)
     defaultLayout $ do
-        setTitle $ toHtml $ forumTitle currentForum
+        setTitle $ toHtml $ currentForumTitle
         $(widgetFile "forum")
 
 type TopicListInfo = (E.Value Text, E.Value Slug, E.Value Text, E.Value UTCTime, E.Value Int, E.Value (Maybe Text), E.Value (Maybe UTCTime))

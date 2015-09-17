@@ -1,3 +1,5 @@
+<h1>#{currentForumTitle}
+
 $if not $ null fora
     <h2>_{MsgForaList}
     ^{forumListPartial fora}

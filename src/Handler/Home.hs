@@ -9,5 +9,6 @@ getHomeR = do
     muser <- maybeAuth
     fora <- runDB $ selectFora Nothing
     defaultLayout $ do
-        setTitle . toHtml . appForumTitle $ appSettings master
+        let currentForumTitle = appForumTitle $ appSettings master
+        setTitle $ toHtml currentForumTitle
         $(widgetFile "homepage")

@@ -1,3 +1,5 @@
+<h1>#{currentForumTitle}
+
 $maybe Entity _ user <- muser
     $if isAdmin user
         <p .pull-right>
