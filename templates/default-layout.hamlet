@@ -15,6 +15,6 @@
                     <a href=@{AuthR LoginR}>_{MsgLogIn}
 
 $maybe msg <- mmsg
-    <div #message>#{msg}
+    <div .alert.alert-info>#{msg}
 
 ^{widget}
