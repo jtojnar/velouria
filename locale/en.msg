@@ -2,7 +2,7 @@ ForumName: Forum name
 TopicName: Topic name
 LastPost: Last Post
 LastTopic: Last Topic
-EmptyForum: Threre aren’t any messages in this forum.
+EmptyForum: Threre aren’t any topics in this forum.
 NoFora: There aren’t any fora yet.
 CreateTopicLink: Create a topic
 CreateForumLink: Create a forum
