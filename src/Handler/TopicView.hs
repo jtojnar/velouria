@@ -1,3 +1,4 @@
+{-# LANGUAGE NoDisambiguateRecordFields, NoRecordWildCards #-}
 module Handler.TopicView where
 
 import Import

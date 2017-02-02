@@ -4,5 +4,7 @@ flags:
         dev: false
 packages:
 - '.'
-extra-deps: []
-resolver: lts-3.4
+extra-deps:
+- esqueleto-2.5.1
+- yesod-text-markdown-0.1.8
+resolver: lts-7.18

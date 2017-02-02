@@ -1,3 +1,4 @@
+{-# LANGUAGE NoDisambiguateRecordFields, NoRecordWildCards #-}
 module Foundation where
 
 import Import.NoFoundation
